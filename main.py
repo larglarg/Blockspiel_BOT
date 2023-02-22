@@ -54,12 +54,12 @@ while True:
 
             if monitor.is_primary:
                 eatx = eat()
-                auto_XP_x.x = int(monitor.width * 0.5420085971)
-                auto_XP_x.y = int(monitor.height * 0.9263377345)
+                eatx.x = int(monitor.width * 0.5420085971)
+                eatx.y = int(monitor.height * 0.9263377345)
                 eatx.start()
 
     if command[0] == "list":
-        print(eatx.is_running)
+        print(eatx.in_progress)
         print(auto_XP_x.is_running)
 
     if command[0] == "set":

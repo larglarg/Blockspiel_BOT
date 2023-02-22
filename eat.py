@@ -12,30 +12,42 @@ class eat(threading.Thread):
         regularly for the stopped() condition."""
 
     def __init__(self):
-        self.is_running = False
         self.run = None
         self.runs = None
         super().__init__()
         self.color = None
         self.slott = None
         print("eat wurde erstellt")
-        self.time_set = 10
+        self.time_set = 1
         self.break_time = 50
         self.food_slott = 9
         self.x = 0
         self.y = 0
         self._stop_event = threading.Event()
         self.to_stop = False
+        self.eat_main_tread = threading.Thread(target=self.threads, args=())
+        self.thread = threading.Thread(target=self.thread, args=())
+        self.in_progress = False
 
     def start(self):
-        self.runs = threading.Thread(target=self.threads, args=())
-        self.runs.daemon = True
-        self.is_running = True
+        self.eat_main_tread.daemon = True
+        self.eat_main_tread.start()
 
     def threads(self):
-        while not self.to_stop:
-            self.run = threading.Thread(target=self.thread, args=())
-            self.run.daemon = True
+        while True:
+            time.sleep(2)
+
+
+            self.thread.start()
+            self.in_progress = True
+            while self.thread:
+                time.sleep(2)
+
+
+
+
+
+
     def thread(self):
         self.keybord = pynput.keyboard.Controller()
         self.mouse = pynput.mouse.Controller()
@@ -44,28 +56,28 @@ class eat(threading.Thread):
         time.sleep(self.time_set)
         self.slott = str(self.food_slott)
         self.color = [178, 46]
-        while not self.stopped():
-            time.sleep(1)
-            im = pyautogui.screenshot.new()
-            px = im.getpixel((self.x, self.y))
-            print(px[0])
-            print(px[1])
-            print(px[2])
-            if not px[0] == self.color[0]:
-                if not px[0] == self.color[1]:
-                    self.keybord.press(self.slott)
-                    self.keybord.release(self.slott)
-                    self.mouse.press(Button.right)
-                    time.sleep(1.61)
-                    self.mouse.release(Button.right)
-                else:
-                    print("genug essen 46")
+
+        time.sleep(1)
+        im = pyautogui.screenshot()
+        px = im.getpixel((self.x, self.y))
+        print(px[0])#r
+        print(px[1])#g
+        print(px[2])#b
+        if not px[0] == self.color[0]:
+            if not px[0] == self.color[1]:
+                self.keybord.press(self.slott)
+                self.keybord.release(self.slott)
+                self.mouse.press(Button.right)
+                time.sleep(1.61)
+                self.mouse.release(Button.right)
             else:
-                print("genug essen 178")
-                if self.to_stop:
-                    self.to_stop = False
-                    self.is_running = False
-                    break
+                print("genug essen 46")
+        else:
+            print("genug essen 178")
+            if self.to_stop:
+                self.to_stop = False
+        self.in_progress = False
+
 
 
 

@@ -12,20 +12,19 @@ class auto_xp():
         self.slott = None
         self.keyboard = pynput.keyboard.Controller()
         self.mouse = pynput.mouse.Controller()
-        self.x = None
-        self.y = None
         self.time_set = 10
         self.break_time = 5
         self.schwert_slot = 1
         print("autoXP wurde erstellt")
         self.to_stop = False
         self.is_running = False
+        self.thread = threading.Thread(target=self.thread, args=())
 
 
 
     def start(self):
-        self.run = threading.Thread(target=self.thread, args=())
-        self.run.daemon = True
+        self.thread.daemon = True
+        self.thread.start()
 
     def thread(self):
         print(f"bot autoXP startet in {self.time_set} Sekunden")

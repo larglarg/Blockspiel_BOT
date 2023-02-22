@@ -11,7 +11,7 @@ from eat import *
 logging.basicConfig(filename='main.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 logging.debug('program wird gestartet')
 
-# keyboard und mouse erstellen
+# keyboard und mouse erstellen1
 keyboard = pynput.keyboard.Controller()
 mouse = pynput.mouse.Controller()
 if keyboard:

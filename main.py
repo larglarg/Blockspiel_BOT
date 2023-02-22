@@ -14,20 +14,23 @@ def auto_xp(time_set, schwert_slot):
     logging.info("LOG    :Skript wird gestarted")
     time.sleep(time_set)
     slott = str(schwert_slot)
+    keybord.press(Key.esc)
+    keybord.release(Key.esc)
     while True:
         keybord.press(slott)
         keybord.release(slott)
         mouse.press(Button.left)
         time.sleep(0.0001)
         mouse.release(Button.left)
-        time.sleep(10)
+        time.sleep(3)
         keybord.press("d")
         time.sleep(1)
         keybord.release("d")
+        time.sleep(1)
         keybord.press("a")
         time.sleep(0.3)
         keybord.release("a")
-        time.sleep(10)
+        time.sleep(3s)
 
 
 def eat(food_slott, x, y):

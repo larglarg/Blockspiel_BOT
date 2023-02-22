@@ -30,7 +30,6 @@ def auto_xp(time_set, schwert_slot):
         time.sleep(10)
 
 
-
 def eat(food_slott, x, y):
     slott = str(food_slott)
     while True:
@@ -66,6 +65,11 @@ while True:
     command = inputs.split(" ")
     if command[0] == "exit":
         if skript_is_running:
+            try:
+                eat.kill()
+                auto_xp.kill()
+            except:
+                print("kill thread error")
 
         print("ok bye")
         break

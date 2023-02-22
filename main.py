@@ -10,8 +10,8 @@ from screeninfo import get_monitors
 
 
 def auto_xp(time_set, schwert_slot):
-    print(f"Program startet in {time_set}")
     logging.info("LOG    :Skript wird gestarted")
+    print(f"Program startet in {time_set}")
     time.sleep(time_set)
     slott = str(schwert_slot)
     keybord.press(Key.esc)
@@ -30,22 +30,32 @@ def auto_xp(time_set, schwert_slot):
         keybord.press("a")
         time.sleep(0.3)
         keybord.release("a")
-        time.sleep(3s)
+        time.sleep(3)
 
 
-def eat(food_slott, x, y):
+def eat(time_set, food_slott, x, y):
+    print(f"eat startet in {time_set}")
+    time.sleep(time_set)
     slott = str(food_slott)
     while True:
+        time.sleep(5)
         color = [178, 46]
         im = pyautogui.screenshot()
         px = im.getpixel((x, y))
-        if not px[0] == 178 or px[0] == 46:
+        print(px[0])
+        if not px[0] == 178:
             keybord.press(slott)
             keybord.release(slott)
             mouse.press(Button.right)
-            time.sleep(5)
+            time.sleep(1.61)
             mouse.release(Button.right)
-        time.sleep(60)
+        if not px[0] == 46:
+            keybord.press(slott)
+            keybord.release(slott)
+            mouse.press(Button.right)
+            time.sleep(1.61)
+            mouse.release(Button.right)
+
 
 
 logging.basicConfig(filename='main.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
@@ -69,8 +79,8 @@ while True:
     if command[0] == "exit":
         if skript_is_running:
             try:
-                eat.kill()
-                auto_xp.kill()
+                eat_thread.kill()
+                auto_xp_thread.kill()
             except:
                 print("kill thread error")
 
@@ -88,17 +98,21 @@ while True:
                 print("es läuft bereits ein skript")
             else:
                 skript_is_running = True
-                thread = threading.Thread(target=auto_xp(time_set, schwert_slot), args=(1,))
+                auto_xp_thread = threading.Thread(target=auto_xp, args=(time_set, schwert_slot))
+                auto_xp_thread.daemon = True
                 logging.info("LOG   : Skript wurde gestarted")
-                thread.start()
+                auto_xp_thread.start()
+                print("auto_xp wurde gestarted")
 
         for monitor in get_monitors():
 
             if monitor.is_primary:
                 x = int(monitor.width * 0.5420085971)
                 y = int(monitor.height * 0.9263377345)
-                eat = threading.Thread(target=eat(food_slott, x, y), args=(1,))
-                eat.start()
+                eat_thread = threading.Thread(target=eat, args=(time_set, food_slott, x, y))
+                eat_thread.daemon = True
+                eat_thread.start()
+                print("eat wurde gestarted")
     if command[0] == "set":
         if command[1] == "starttime":
             time_set = command[2]
@@ -113,8 +127,8 @@ while True:
             logging.info("ERROR    :Es läuft grade kein skript")
             print("Es läuft grade kein skript")
         else:
-            auto_xp.terminate()
-            eat.terminate()
+            auto_xp_thread.terminate()
+            eat_thread.terminate()
 
             if command[1] == "autoXP":
                 print("Bot wurde gestopt")
@@ -124,5 +138,5 @@ while True:
             print("Es läuft grade kein skript")
         else:
             if command[1] == "autoXP":
-                auto_xp.kill()
-                eat.kill()
+                auto_xp_thread.kill()
+                eat_thread.kill()

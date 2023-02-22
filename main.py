@@ -38,23 +38,27 @@ def eat(time_set, food_slott, x, y):
     time.sleep(time_set)
     slott = str(food_slott)
     while True:
-        time.sleep(5)
+        im = ""
+        time.sleep(100)
         color = [178, 46]
         im = pyautogui.screenshot()
         px = im.getpixel((x, y))
         print(px[0])
+        print(px[1])
+        print(px[2])
         if not px[0] == 178:
-            keybord.press(slott)
-            keybord.release(slott)
-            mouse.press(Button.right)
-            time.sleep(1.61)
-            mouse.release(Button.right)
-        if not px[0] == 46:
-            keybord.press(slott)
-            keybord.release(slott)
-            mouse.press(Button.right)
-            time.sleep(1.61)
-            mouse.release(Button.right)
+            if not px[0] == 46:
+                keybord.press(slott)
+                keybord.release(slott)
+                mouse.press(Button.right)
+                time.sleep(1.61)
+                mouse.release(Button.right)
+            else:
+                print("genug essen 46")
+        else:
+            print("genug essen 178")
+        time.sleep(1) # wait for 1 second before taking the next screenshot
+
 
 
 
